@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "skyblockoverlay",
+  "version": "${version}",
+  "name": "Skyblock Mob Overlay",
+  "description": "在屏幕内已可见的生物上方渲染等级/稀有度/血量信息叠加层（不穿墙）。",
+  "authors": ["you"],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/skyblockoverlay/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "com.skyblockoverlay.client.SkyblockOverlayClient"
+    ],
+    "modmenu": [
+      "com.skyblockoverlay.config.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "skyblockoverlay.client.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.18.4",
+    "fabric-api": "*",
+    "minecraft": "~26.1",
+    "java": ">=25",
+    "yetanotherconfiglib": "*"
+  }
+}

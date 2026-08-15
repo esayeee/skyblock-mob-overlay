@@ -1,0 +1,31 @@
+# Gradle
+.gradle/
+build/
+out/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Loom / Minecraft run环境（含正版账号缓存、世界存档等，不应进仓库）
+run/
+
+# IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse
+.project
+.classpath
+.settings/
+bin/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# 本地环境变量 / 密钥（如果之后接了发布用的签名或 token，务必确保不进仓库）
+.env
+local.properties
