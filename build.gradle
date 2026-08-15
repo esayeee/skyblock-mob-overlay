@@ -1,5 +1,6 @@
 plugins {
-	id 'fabric-loom' version '1.15-SNAPSHOT'
+	// 26.1 起插件 id 从旧的 'fabric-loom' 换成不做重映射的新插件
+	id 'net.fabricmc.fabric-loom' version '1.15-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -16,8 +17,10 @@ repositories {
 	maven { url 'https://maven.terraformersmc.com/releases/' } // Mod Menu
 }
 
-// 26.1 起 Mojang 官方映射已完全去混淆，直接用 officialMojangMappings()
-// 不再需要 Yarn intermediary。
+// 26.1 起客户端完全反混淆，Mojang / Fabric 都不再提供任何 mappings 文件，
+// 所以下面 dependencies 里【不能】再写 `mappings loom.officialMojangMappings()`
+// 这一行——它对应的 mappings 产物在 26.1 已经不存在了，写了就是本项目
+// 之前遇到的 "Failed to find official mojang mappings for 26.1.2" 报错的根源。
 loom {
 	// 26.1 起客户端/服务端源集分离，避免把纯客户端渲染代码打进 dedicated server
 	splitEnvironmentSourceSets()
@@ -32,14 +35,17 @@ loom {
 
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	mappings loom.officialMojangMappings()
-	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	// 无 mappings 行 —— 26.1 客户端本身就是可读的官方命名，
+	// Loom 直接把它当成一个普通带源码的 Java 库来用。
 
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	// 26.1 起不再需要 modImplementation/modCompileOnly 这种"帮你重映射"
+	// 的特殊配置，普通的 implementation/compileOnly 就够了。
+	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// YetAnotherConfigLib + 其依赖的 3rd-party-cursed-lib
-	modImplementation "dev.isxander:yetanotherconfiglib:${project.yacl_version}"
-	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+	// YetAnotherConfigLib + Mod Menu
+	implementation "dev.isxander:yetanotherconfiglib:${project.yacl_version}"
+	implementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 }
 
 processResources {
